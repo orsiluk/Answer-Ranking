@@ -60,10 +60,10 @@ import datetime
 #    return sims
     
     
-xml_fname = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/SemEval2016-Task3-CQA-QL-train-part1-subtaskA.xml'
-xml_fname2 = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/SemEval2016-Task3-CQA-QL-train-part2-subtaskA.xml'
-xml_test = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/SemEval2016-Task3-CQA-QL-dev-subtaskA.xml'
-#xml_test = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/test_input.xml'
+xml_fname = 'SemEval2016-Task3-CQA-QL-train-part1-subtaskA.xml'
+xml_fname2 = 'SemEval2016-Task3-CQA-QL-train-part2-subtaskA.xml'
+xml_test = 'SemEval2016-Task3-CQA-QL-dev-subtaskA.xml'
+#xml_test = 'test_input.xml'
 lemmatizer = WordNetLemmatizer()
 vectorizer = CountVectorizer(analyzer = "word") 
  
