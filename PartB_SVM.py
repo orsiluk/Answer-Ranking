@@ -25,10 +25,10 @@ import keras.preprocessing.text
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-xml_fname = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/SemEval2016-Task3-CQA-QL-train-part1-subtaskA.xml'
-xml_fname2 = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/SemEval2016-Task3-CQA-QL-train-part2-subtaskA.xml'
-#xml_test = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/SemEval2016-Task3-CQA-QL-dev-subtaskA.xml'
-xml_test = '/Users/lukacs_orsi/Dropbox/Uni/Year 3/Term 2/Text based information retrival/To_subbmit/test_input.xml'
+xml_fname = 'SemEval2016-Task3-CQA-QL-train-part1-subtaskA.xml'
+xml_fname2 = 'SemEval2016-Task3-CQA-QL-train-part2-subtaskA.xml'
+#xml_test = 'SemEval2016-Task3-CQA-QL-dev-subtaskA.xml'
+xml_test = 'test_input.xml'
 
 
 
@@ -305,7 +305,7 @@ if __name__ == '__main__':
         listorder.append(order)
     
     #print "Printing to file"
-    #f = open('/Users/lukacs_orsi/Desktop/Text_Based_information_retrival/Semieval/Assignment/TBIR_task/scorer/ learningto_rank_orsolya_lukacs_kisbandi', 'w')
+    #f = open('learningto_rank', 'w')
     #
     #for i in range(0,len(q_id)):      
     #    create_line(i,i*10,q_id,a_id,listorder[i],cos_sim_test) 
