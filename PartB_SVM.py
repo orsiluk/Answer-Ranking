@@ -1,18 +1,13 @@
-""" Try II """
-
 # -*- coding: utf-8 -*-
 import re
 import nltk
 
 import numpy as np
 import itertools
-#from scipy import stats
-#import pylab as pl
 from sklearn import svm #, linear_model, cross_validation
 
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-#from nltk.stem.porter import PorterStemmer
 english_stemmer=nltk.stem.SnowballStemmer('english')
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -39,10 +34,8 @@ def toPairs(X,simans, y):
         y = np.asarray(y) # Turn input labels into array
         if y.ndim == 1:
             y = np.c_[y, np.ones(y.shape[0])] #concatonate the two arrays y and an array of ones
-        #print('y.shape',y.shape)
         comb = itertools.combinations(range(X.shape[0]), 2) # Use iterator for efficiency and 
                                                             # create combinations of 2 of all the elements
-        #print y
         for k, (i, j) in enumerate(comb):                   # For each element in the combination
                                                             # k is the number of combinations
             if y[i,0] == y[j,0] or y[i,1] != y[j,1]:   
@@ -70,38 +63,28 @@ def toPairs(X,simans, y):
     
         return np.asarray(X_trans),0
    
-class RankSVM(svm.LinearSVC): # We use LinearSVC as a base and we override it
-    """Pairwise ranking with an underlying LinearSVC model created by overriding 
+class RankSVM(svm.LinearSVC):
+    """
+    Pairwise ranking with an underlying LinearSVC model created by overriding 
     the svm.LinearSVC method
     """
 
     def fit(self, X,Xo, y):
 
         print('fit....')
-        #print(len(X), len(y))
         i=0
         X_trans = []
         y_trans =[]
         while (i<X.shape[0]):
-            #simans = (similarity(Xo[i:i+10],Xo[i:i+10]))
             xx,yy = toPairs(X[i:i+10],Xo[i:i+10],y[i:i+10])
             X_trans.extend(xx)
             y_trans.extend(yy)
             i +=10
-        #print(len(X_trans),X_trans)
         X_trans = np.asarray(X_trans)
         y_trans = np.asarray(y_trans)
-        #print(X_trans.shape,y_trans.shape)
-        #simans = np.asarray(simans)
-        
-        #X_trans, y_trans = toPairs(X,simans, y)
         
         super(RankSVM, self).fit(X_trans, y_trans) # Override self -- Update
         return self, X_trans, y_trans
-
-    #def decision_function(self, X):
-    #    if np.count_nonzero(X) == 0 : return X
-    #    else : return np.dot(X, self.coef_.ravel()) # Using the hinge loss function re-weight the array
 
     def predict(self, X):
         print('predicting .....')
@@ -113,9 +96,6 @@ class RankSVM(svm.LinearSVC): # We use LinearSVC as a base and we override it
         print('scores........')
         X_trans,y_trans = toPairs(X,Xo,0)
 
-        #X_trans = np.asarray(X_trans)
-        #y_trans = np.asarray(y_trans)
-        #X_trans, y_trans = toPairs(X, y)
         if sum(X_trans) == 0:
             #score = 0
             result = np.zeros(10)
@@ -217,9 +197,7 @@ def create_line(q,ans,qid,a_id,rank,res):
         else: 
             data.append('false')
         f.write('\t'.join(map(str,data)))
-        f.write('\n')      
-                     
-                                        
+        f.write('\n')                                           
         
 #-----------MAIN--------------#
 if __name__ == '__main__':

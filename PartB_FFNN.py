@@ -11,27 +11,17 @@ import itertools
 
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-#from nltk.stem.porter import PorterStemmer
 english_stemmer=nltk.stem.SnowballStemmer('english')
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem import WordNetLemmatizer
 from string import maketrans
-#from sklearn.externals import joblib
 import pickle
 
-
-#from keras.preprocessing import sequence
 from keras.models import Sequential
 from keras.layers import Dense
-#from keras.layers.embeddings import Embedding
-#from keras.layers.recurrent import LSTM
-#from keras.preprocessing.text import Tokenizer
-#from keras.layers import SpatialDropout1D
 import keras.preprocessing.text
-#from keras import backend
 from keras.layers import Activation
-#from keras.models import Model
 from sklearn.metrics.pairwise import cosine_similarity
 
 import tensorflow as tf
@@ -143,18 +133,13 @@ def create_line(q,ans,qid,a_id,res,simil):
         f.write('\t'.join(map(str,data)))
         f.write('\n')
 
-#Tried to have Questions ans input as well, but for now couldn't figure out
-#how to merge the three layers, question vector, asnwer vector and similarity
-#in a way to be accepted by the model
 def mergeInfo(ans,quest,dist):
     new = []
     
     for i in range(len(quest)):
        for j in range (0,10):
            new.append(keras.layers.merge.Concatenate([quest[i],ans[i*10+j]],dist[i*10+j][0][0]))  
-    return new        
-                     
-                                        
+    return new                                             
         
 #-----------MAIN--------------#
 if __name__ == '__main__':

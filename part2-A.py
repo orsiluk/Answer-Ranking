@@ -7,7 +7,6 @@ import numpy as np
 
 from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
-#from nltk.stem.porter import PorterStemmer
 english_stemmer=nltk.stem.SnowballStemmer('english')
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -32,7 +31,7 @@ xml_test = 'test_input.xml'
 
 
 
-# Had to write this work around because of an error in keras which gave an error 
+# Had to write this work around because of an error in keras which caoused problems 
 # when running tokenizer.texts_to_sequences() -- source: https://github.com/fchollet/keras/issues/1072
 
 def text_to_word_sequence(text,
@@ -74,7 +73,7 @@ def only_text(a):
         text.append(" ".join(words))
     return text
 
-#Obtain labels either a boolean value, when we want relevancy, or the actual albel            
+#Obtain labels either a boolean value, when we want relevancy, or the actual label            
 def get_label(test_c,label,expected):
     gr = []
     if (expected == 'value'):
@@ -125,9 +124,6 @@ def create_line(q,ans,qid,a_id,res,simil):
         f.write('\t'.join(map(str,data)))
         f.write('\n')
 
-#Tried to have Questions ans input as well, but for now couldn't figure out
-#how to merge the three layers, question vector, asnwer vector and similarity
-#in a way to be accepted by the model
 def mergeInfo(ans,quest,dist):
     new = []
     
@@ -135,8 +131,7 @@ def mergeInfo(ans,quest,dist):
        for j in range (0,10):
            new.append(keras.layers.merge.Concatenate([quest[i],ans[i*10+j]],dist[i*10+j][0][0]))  
     return new        
-                     
-                                        
+                                                         
         
 #-----------MAIN--------------#
 
@@ -178,10 +173,10 @@ train_cos = similarity(train_quest_features.toarray(),train_features.toarray())
 test_cos = similarity(test_quest_features.toarray(),test_features.toarray())
 #---------LSTM---------
 max_features = 2000   # limit the total number of words that we are interested 
-                       # in modeling to the X most frequent words
+                      # in modeling to the X most frequent words
 EMBEDDING_DIM = 100
-maxlen = 80            # Max answer || question length
-batch_size = 32        # Number of comments used to space out weight updates
+maxlen = 80           # Max answer || question length
+batch_size = 32       # Number of comments used to space out weight updates
 nb_classes = 2
 
 train_l = np.array(label_train)
@@ -196,15 +191,6 @@ sq_test = tokenizer.texts_to_sequences(test_array)
 
 qutrain_sq = tokenizer.texts_to_sequences(train_quest)
 qutest_sq = tokenizer.texts_to_sequences(test_quest)
-
-# -------- Trying to merge two layers and make the thrid
-
-               
-#new_train = mergeInfo(sq_train,qutrain_sq,train_cos)
-#new_test = mergeInfo(sq_test,qutest_sq,test_cos)
-
-#new_train = sequence(new_train)
-#new_test = sequence(new_test)
 
 # We need this because to train the embedding layer the length of the sequence has to be ct
 # Embedding layers map from indices to vectors
@@ -229,9 +215,8 @@ print('--- Building model ---')
 
 
 model = Sequential()
-#model.add(Merge([sq_train,qutrain_sq,train_cos], mode='concat'))
-model.add(Embedding(max_features, 128)) # 128 is the embedding_vecor_length 
-                                        # It is the legth of the first layers' vectors
+model.add(Embedding(max_features, 128))              # 128 is the embedding_vecor_length 
+                                                     # It is the legth of the first layers' vectors
 model.add(SpatialDropout1D(0.2))                     # SpatialDropout1D will help promote independence between feature maps
 model.add(LSTM(128))                                 # 128 here is the number of 'neurons' used
 model.add(Dense(1, activation='sigmoid'))            # because this is a classification problem 
@@ -244,7 +229,6 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 print(model.summary())
 
 print('Train.........')
-
 
 #new_train = mergInfo(train_d,qutrain_sq,train_cos)
 #new_test = mergInfo(test_d,qutest_sq,test_cos)
